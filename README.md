@@ -34,6 +34,10 @@ pnpm check
 
 Plugin IDs are permanent kebab-case identifiers. Plugin versions follow SemVer intent, while the Paws host currently enforces an exact installed version. Secret configuration must be validated on the server and represented only by irreversible hints in public status responses.
 
+## Releases
+
+Versioned packages are published through GitHub Releases with a catalog, machine-readable release metadata, SHA-256 checksums, and build provenance. See [RELEASING.md](RELEASING.md).
+
 See the Paws [plugin development standard](https://github.com/wangjs-jacky/happy/blob/main/docs/plugin-development.md) for the complete lifecycle and security contract.
 
 ## License

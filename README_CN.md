@@ -24,6 +24,10 @@ pnpm check
 
 插件 ID 发布后不可更改。插件版本遵循 SemVer 意图，Paws 主机当前使用精确版本门禁。所有 secret 必须在服务端校验，公开状态只能返回不可逆提示。
 
+## 版本发布
+
+版本包通过 GitHub Releases 发布，同时提供插件目录、机器可读发布元数据、SHA-256 和构建来源证明。完整流程见 [RELEASING_CN.md](RELEASING_CN.md)。
+
 完整生命周期和安全约定见 Paws 的[插件开发规范](https://github.com/wangjs-jacky/happy/blob/main/docs/plugin-development.md)。
 
 ## 许可证

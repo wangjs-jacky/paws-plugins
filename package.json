@@ -12,6 +12,7 @@
     "dist",
     "README.md",
     "README_CN.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "exports": {
@@ -49,7 +50,9 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "pnpm typecheck && pnpm test && pnpm build"
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "release:validate": "node scripts/create-release.mjs --validate-only",
+    "release:artifacts": "pnpm check && node scripts/create-release.mjs"
   },
   "dependencies": {
     "remend": "^1.0.1",

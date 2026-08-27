@@ -19,3 +19,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      - run: pnpm release:validate
+      - name: Ensure committed build output is current
+        run: git diff --exit-code -- dist

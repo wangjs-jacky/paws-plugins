@@ -7,3 +7,5 @@
 - Do not add executable code, arbitrary routes, or remote module URLs to manifests.
 - Keep Paws-specific Expo, database, Socket.IO, and storage integration in host Adapters.
 - Run `pnpm check` before committing.
+- Repository releases use `v<package.json version>` tags. Never move or reuse a published tag.
+- Run `pnpm release:artifacts` before tagging and verify every SHA-256 checksum.
