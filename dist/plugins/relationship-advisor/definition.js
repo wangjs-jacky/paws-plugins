@@ -17,7 +17,7 @@ const manifest = {
     schemaVersion: 2,
     hostApiVersion: 1,
     id: 'relationship-advisor',
-    version: '1.1.0',
+    version: '1.1.1',
     title: localized('Relationship Advisor', '狗头军师', '狗頭軍師'),
     description: localized('Analyze conversations and get advice using your configured AI provider.', '使用你配置的 AI 提供商分析对话并获取建议。', '使用你設定的 AI 供應商分析對話並取得建議。'),
     icon: 'chatbubbles-outline',
@@ -27,6 +27,7 @@ const manifest = {
         'paws.ai.provider.invoke',
         'paws.secrets.use',
         'paws.conversations.images.read',
+        'paws.storage.images.write',
     ],
     entrypoint: { type: 'view', viewId: 'relationship-advisor.chat' },
     contributes: {

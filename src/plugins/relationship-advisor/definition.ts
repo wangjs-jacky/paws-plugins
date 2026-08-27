@@ -25,7 +25,7 @@ const manifest: PluginManifestV2 = {
     schemaVersion: 2,
     hostApiVersion: 1,
     id: 'relationship-advisor',
-    version: '1.1.0',
+    version: '1.1.1',
     title: localized('Relationship Advisor', '狗头军师', '狗頭軍師'),
     description: localized(
         'Analyze conversations and get advice using your configured AI provider.',
@@ -39,6 +39,7 @@ const manifest: PluginManifestV2 = {
         'paws.ai.provider.invoke',
         'paws.secrets.use',
         'paws.conversations.images.read',
+        'paws.storage.images.write',
     ],
     entrypoint: { type: 'view', viewId: 'relationship-advisor.chat' },
     contributes: {

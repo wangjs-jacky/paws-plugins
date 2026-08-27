@@ -14,7 +14,8 @@ export interface PluginConfigurationField {
 export type PluginPermission =
     | 'paws.ai.provider.invoke'
     | 'paws.secrets.use'
-    | 'paws.conversations.images.read';
+    | 'paws.conversations.images.read'
+    | 'paws.storage.images.write';
 
 export type PluginViewSurface = 'page' | 'left-sidebar' | 'right-panel' | 'modal';
 
@@ -40,10 +41,9 @@ export interface PluginManifestV2 {
     featured: boolean;
     installedAction: 'configure' | 'open';
     permissions: PluginPermission[];
-    entrypoint: {
-        type: 'view';
-        viewId: string;
-    };
+    entrypoint:
+        | { type: 'view'; viewId: string }
+        | { type: 'configuration'; viewId: string };
     contributes: {
         views: PluginViewContribution[];
     };

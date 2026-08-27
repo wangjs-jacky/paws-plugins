@@ -9,7 +9,7 @@ export interface PluginConfigurationField {
     label: PluginLocalizedText;
     placeholder?: PluginLocalizedText;
 }
-export type PluginPermission = 'paws.ai.provider.invoke' | 'paws.secrets.use' | 'paws.conversations.images.read';
+export type PluginPermission = 'paws.ai.provider.invoke' | 'paws.secrets.use' | 'paws.conversations.images.read' | 'paws.storage.images.write';
 export type PluginViewSurface = 'page' | 'left-sidebar' | 'right-panel' | 'modal';
 /**
  * A declarative UI contribution. The host resolves the stable view ID to a
@@ -34,6 +34,9 @@ export interface PluginManifestV2 {
     permissions: PluginPermission[];
     entrypoint: {
         type: 'view';
+        viewId: string;
+    } | {
+        type: 'configuration';
         viewId: string;
     };
     contributes: {

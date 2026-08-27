@@ -8,8 +8,8 @@ import {
 } from './releaseMetadata.mjs';
 
 const manifests = [
-    { schemaVersion: 2, id: 'relationship-advisor', version: '1.1.0' },
-    { schemaVersion: 2, id: 'generated-images-gallery', version: '1.1.0' },
+    { schemaVersion: 2, id: 'relationship-advisor', version: '1.1.1' },
+    { schemaVersion: 2, id: 'generated-images-gallery', version: '1.1.1' },
 ];
 
 describe('release metadata', () => {
@@ -21,8 +21,8 @@ describe('release metadata', () => {
             commit: 'a'.repeat(40),
             manifests,
         })).toEqual([
-            { id: 'relationship-advisor', version: '1.1.0' },
-            { id: 'generated-images-gallery', version: '1.1.0' },
+            { id: 'relationship-advisor', version: '1.1.1' },
+            { id: 'generated-images-gallery', version: '1.1.1' },
         ]);
     });
 

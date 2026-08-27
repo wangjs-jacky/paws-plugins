@@ -53,6 +53,7 @@ describe('plugin catalog', () => {
                 'paws.ai.provider.invoke',
                 'paws.secrets.use',
                 'paws.conversations.images.read',
+                'paws.storage.images.write',
             ],
             entrypoint: { type: 'view', viewId: 'relationship-advisor.chat' },
             contributes: {
@@ -72,6 +73,7 @@ describe('plugin catalog', () => {
                 views: expect.arrayContaining([
                     expect.objectContaining({ id: 'generated-images-gallery.browser', surface: 'page' }),
                     expect.objectContaining({ id: 'generated-images-gallery.session-images', surface: 'right-panel' }),
+                    expect.objectContaining({ id: 'generated-images-gallery.configuration', surface: 'modal' }),
                 ]),
             },
         });

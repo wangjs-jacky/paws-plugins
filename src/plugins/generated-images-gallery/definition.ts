@@ -9,7 +9,7 @@ export const generatedImagesGalleryPlugin: PluginPackageDefinition = {
         schemaVersion: 2,
         hostApiVersion: 1,
         id: 'generated-images-gallery',
-        version: '1.1.0',
+        version: '1.1.1',
         title: localized('Generated Images', '生成图片', '生成圖片'),
         description: localized(
             'Browse images generated in your conversations.',
@@ -34,6 +34,12 @@ export const generatedImagesGalleryPlugin: PluginPackageDefinition = {
                     surface: 'right-panel',
                     title: localized('Session images', '会话图片', '對話圖片'),
                     icon: 'images-outline',
+                },
+                {
+                    id: 'generated-images-gallery.configuration',
+                    surface: 'modal',
+                    title: localized('Gallery settings', '画廊设置', '圖庫設定'),
+                    icon: 'settings-outline',
                 },
             ],
         },
