@@ -1,0 +1,58 @@
+{
+  "name": "@paws/plugins",
+  "version": "0.1.0",
+  "description": "First-party plugin packages for Paws",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangjs-jacky/paws-plugins.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README_CN.md",
+    "LICENSE"
+  ],
+  "exports": {
+    "./catalog": {
+      "types": "./dist/catalog.d.ts",
+      "default": "./dist/catalog.js"
+    },
+    "./relationship-advisor/server": {
+      "types": "./dist/plugins/relationship-advisor/server.d.ts",
+      "default": "./dist/plugins/relationship-advisor/server.js"
+    },
+    "./relationship-advisor/chat": {
+      "types": "./dist/plugins/relationship-advisor/chat.d.ts",
+      "default": "./dist/plugins/relationship-advisor/chat.js"
+    },
+    "./relationship-advisor/streaming-markdown": {
+      "types": "./dist/plugins/relationship-advisor/streamingMarkdown.d.ts",
+      "default": "./dist/plugins/relationship-advisor/streamingMarkdown.js"
+    },
+    "./generated-images-gallery/model": {
+      "types": "./dist/plugins/generated-images-gallery/model.d.ts",
+      "default": "./dist/plugins/generated-images-gallery/model.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "remend": "^1.0.1",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.3",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.0"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

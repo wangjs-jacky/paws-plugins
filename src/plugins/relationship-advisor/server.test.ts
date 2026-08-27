@@ -1,0 +1,88 @@
+import { describe, expect, it, vi } from 'vitest';
+
+import {
+    streamRelationshipAdvisor,
+    validateRelationshipAdvisorProviderUrl,
+} from './server.js';
+
+function streamResponse(chunks: string[]): Response {
+    const encoder = new TextEncoder();
+    return new Response(new ReadableStream({
+        start(controller) {
+            for (const chunk of chunks) controller.enqueue(encoder.encode(chunk));
+            controller.close();
+        },
+    }), { status: 200 });
+}
+
+describe('relationship advisor server runtime', () => {
+    it('sends multimodal OpenAI-compatible input and yields fragmented SSE deltas', async () => {
+        const fetchImpl = vi.fn(async (..._args: Parameters<typeof fetch>) => streamResponse([
+            'data: {"choices":[{"delta":{"content":"先看"}}]}\n',
+            '\ndata: {"choices":[{"delta":{"content":"事实"}}]}\n\n',
+            'data: [DONE]\n\n',
+        ]));
+        const validateBaseUrl = vi.fn(async (value: string) => value);
+
+        const deltas: string[] = [];
+        for await (const delta of streamRelationshipAdvisor({
+            messages: [
+                { role: 'assistant', text: '把截图发来吧。' },
+                { role: 'user', text: '右侧蓝色气泡是我。' },
+            ],
+            imageUrls: ['https://oss.test/advisor/image.jpg?signature=short-lived'],
+        }, {
+            apiKey: 'server-only-key',
+            baseUrl: 'https://model.test/v1',
+            model: 'fast-vision-model',
+            fetchImpl: fetchImpl as typeof fetch,
+            validateBaseUrl,
+        })) {
+            deltas.push(delta.text);
+        }
+
+        expect(deltas).toEqual(['先看', '事实']);
+        const [url, init] = fetchImpl.mock.calls[0]!;
+        expect(url).toBe('https://model.test/v1/chat/completions');
+        expect(init?.headers).toEqual(expect.objectContaining({ Authorization: 'Bearer server-only-key' }));
+        expect(JSON.parse(String(init?.body)).messages.at(-1)).toEqual({
+            role: 'user',
+            content: [
+                { type: 'text', text: '右侧蓝色气泡是我。' },
+                { type: 'image_url', image_url: { url: 'https://oss.test/advisor/image.jpg?signature=short-lived' } },
+            ],
+        });
+    });
+
+    it.each([
+        'http://api.example.com/v1',
+        'https://user:password@api.example.com/v1',
+        'https://127.0.0.1/v1',
+        'https://10.0.0.8/v1',
+        'https://[::1]/v1',
+    ])('rejects unsafe provider URL %s', async (baseUrl) => {
+        await expect(validateRelationshipAdvisorProviderUrl(baseUrl, vi.fn()))
+            .rejects.toThrow('Unsafe relationship advisor provider URL');
+    });
+
+    it('does not send the API key when provider URL validation fails', async () => {
+        const fetchImpl = vi.fn();
+        const consume = async () => {
+            for await (const _delta of streamRelationshipAdvisor({
+                messages: [{ role: 'user', text: 'hello' }],
+                imageUrls: [],
+            }, {
+                apiKey: 'must-not-leak',
+                baseUrl: 'https://internal.example/v1',
+                model: 'private-model',
+                fetchImpl: fetchImpl as typeof fetch,
+                validateBaseUrl: vi.fn(async () => { throw new Error('unsafe'); }),
+            })) {
+                // No deltas are expected.
+            }
+        };
+
+        await expect(consume()).rejects.toThrow('unsafe');
+        expect(fetchImpl).not.toHaveBeenCalled();
+    });
+});
