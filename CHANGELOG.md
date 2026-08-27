@@ -2,6 +2,14 @@
 
 All notable repository releases are recorded here. Plugin manifest versions are listed separately because they have an independent user installation lifecycle.
 
+## 0.2.0 - 2026-08-28
+
+### Added
+
+- Plugin Manifest v2 with a versioned Host API contract.
+- Declared permissions and page, left-sidebar, right-panel, and modal UI contributions.
+- Relationship Advisor and Generated Images Gallery plugin `1.1.0` manifests.
+
 ## 0.1.0 - 2026-08-27
 
 ### Added

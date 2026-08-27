@@ -14,15 +14,43 @@ const relationshipAdvisorConfigurationSchema = z.object({
     model: z.string().trim().min(1).max(200),
 }).strict();
 const manifest = {
-    schemaVersion: 1,
+    schemaVersion: 2,
+    hostApiVersion: 1,
     id: 'relationship-advisor',
-    version: '1.0.0',
+    version: '1.1.0',
     title: localized('Relationship Advisor', '狗头军师', '狗頭軍師'),
     description: localized('Analyze conversations and get advice using your configured AI provider.', '使用你配置的 AI 提供商分析对话并获取建议。', '使用你設定的 AI 供應商分析對話並取得建議。'),
     icon: 'chatbubbles-outline',
     featured: true,
     installedAction: 'configure',
-    entrypoint: { type: 'app-route', routeId: 'relationship-advisor' },
+    permissions: [
+        'paws.ai.provider.invoke',
+        'paws.secrets.use',
+        'paws.conversations.images.read',
+    ],
+    entrypoint: { type: 'view', viewId: 'relationship-advisor.chat' },
+    contributes: {
+        views: [
+            {
+                id: 'relationship-advisor.chat',
+                surface: 'page',
+                title: localized('Relationship Advisor', '狗头军师', '狗頭軍師'),
+                icon: 'chatbubbles-outline',
+            },
+            {
+                id: 'relationship-advisor.history',
+                surface: 'left-sidebar',
+                title: localized('Advisor history', '军师对话记录', '軍師對話記錄'),
+                icon: 'chatbubbles-outline',
+            },
+            {
+                id: 'relationship-advisor.configuration',
+                surface: 'modal',
+                title: localized('Advisor configuration', '军师配置', '軍師設定'),
+                icon: 'settings-outline',
+            },
+        ],
+    },
     configuration: {
         notice: localized('Your configuration, including the API key, is encrypted and stored on your Paws server.', '包括 API 密钥在内的配置会加密保存在你的 Paws 服务器中。', '包括 API 金鑰在內的設定會加密儲存在你的 Paws 伺服器中。'),
         fields: [

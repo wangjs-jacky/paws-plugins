@@ -9,8 +9,21 @@ export interface PluginConfigurationField {
     label: PluginLocalizedText;
     placeholder?: PluginLocalizedText;
 }
-export interface PluginManifestV1 {
-    schemaVersion: 1;
+export type PluginPermission = 'paws.ai.provider.invoke' | 'paws.secrets.use' | 'paws.conversations.images.read';
+export type PluginViewSurface = 'page' | 'left-sidebar' | 'right-panel' | 'modal';
+/**
+ * A declarative UI contribution. The host resolves the stable view ID to a
+ * trusted Adapter; manifests never contain executable code or remote URLs.
+ */
+export interface PluginViewContribution {
+    id: string;
+    surface: PluginViewSurface;
+    title: PluginLocalizedText;
+    icon?: string;
+}
+export interface PluginManifestV2 {
+    schemaVersion: 2;
+    hostApiVersion: 1;
     id: string;
     version: string;
     title: PluginLocalizedText;
@@ -18,9 +31,13 @@ export interface PluginManifestV1 {
     icon: string;
     featured: boolean;
     installedAction: 'configure' | 'open';
+    permissions: PluginPermission[];
     entrypoint: {
-        type: 'app-route';
-        routeId: string;
+        type: 'view';
+        viewId: string;
+    };
+    contributes: {
+        views: PluginViewContribution[];
     };
     configuration: {
         notice?: PluginLocalizedText;
@@ -32,8 +49,9 @@ export interface RedactedPluginConfiguration {
     secretHints: Record<string, string>;
 }
 export interface PluginPackageDefinition {
-    manifest: PluginManifestV1;
+    manifest: PluginManifestV2;
     normalizeConfiguration: (configuration: Record<string, string>) => Record<string, string>;
     redactConfiguration: (configuration: Record<string, string>) => RedactedPluginConfiguration;
 }
+export type PluginManifest = PluginManifestV2;
 export declare function localized(defaultText: string, simplifiedChinese: string, traditionalChinese: string): PluginLocalizedText;

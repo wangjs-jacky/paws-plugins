@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import {
     localized,
-    type PluginManifestV1,
+    type PluginManifestV2,
     type PluginPackageDefinition,
 } from '../../contracts.js';
 
@@ -21,10 +21,11 @@ const relationshipAdvisorConfigurationSchema = z.object({
     model: z.string().trim().min(1).max(200),
 }).strict();
 
-const manifest: PluginManifestV1 = {
-    schemaVersion: 1,
+const manifest: PluginManifestV2 = {
+    schemaVersion: 2,
+    hostApiVersion: 1,
     id: 'relationship-advisor',
-    version: '1.0.0',
+    version: '1.1.0',
     title: localized('Relationship Advisor', '狗头军师', '狗頭軍師'),
     description: localized(
         'Analyze conversations and get advice using your configured AI provider.',
@@ -34,7 +35,34 @@ const manifest: PluginManifestV1 = {
     icon: 'chatbubbles-outline',
     featured: true,
     installedAction: 'configure',
-    entrypoint: { type: 'app-route', routeId: 'relationship-advisor' },
+    permissions: [
+        'paws.ai.provider.invoke',
+        'paws.secrets.use',
+        'paws.conversations.images.read',
+    ],
+    entrypoint: { type: 'view', viewId: 'relationship-advisor.chat' },
+    contributes: {
+        views: [
+            {
+                id: 'relationship-advisor.chat',
+                surface: 'page',
+                title: localized('Relationship Advisor', '狗头军师', '狗頭軍師'),
+                icon: 'chatbubbles-outline',
+            },
+            {
+                id: 'relationship-advisor.history',
+                surface: 'left-sidebar',
+                title: localized('Advisor history', '军师对话记录', '軍師對話記錄'),
+                icon: 'chatbubbles-outline',
+            },
+            {
+                id: 'relationship-advisor.configuration',
+                surface: 'modal',
+                title: localized('Advisor configuration', '军师配置', '軍師設定'),
+                icon: 'settings-outline',
+            },
+        ],
+    },
     configuration: {
         notice: localized(
             'Your configuration, including the API key, is encrypted and stored on your Paws server.',
