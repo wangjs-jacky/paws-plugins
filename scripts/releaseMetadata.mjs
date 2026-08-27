@@ -16,7 +16,7 @@ export function validateRelease({ packageName, packageVersion, tag, commit, mani
 
     const ids = new Set();
     for (const manifest of manifests) {
-        invariant(manifest?.schemaVersion === 1, 'Every plugin must use manifest schemaVersion 1');
+        invariant(manifest?.schemaVersion === 2, 'Every plugin must use manifest schemaVersion 2');
         invariant(pluginIdPattern.test(manifest.id), `Invalid plugin ID: ${String(manifest.id)}`);
         invariant(!ids.has(manifest.id), `Duplicate plugin ID: ${manifest.id}`);
         invariant(semverPattern.test(manifest.version), `Invalid version for plugin ${manifest.id}`);
