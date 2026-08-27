@@ -73,10 +73,12 @@ describe('plugin catalog', () => {
                 views: expect.arrayContaining([
                     expect.objectContaining({ id: 'generated-images-gallery.browser', surface: 'page' }),
                     expect.objectContaining({ id: 'generated-images-gallery.session-images', surface: 'right-panel' }),
-                    expect.objectContaining({ id: 'generated-images-gallery.configuration', surface: 'modal' }),
                 ]),
             },
         });
+        expect(gallery!.manifest.contributes.views).not.toContainEqual(
+            expect.objectContaining({ surface: 'modal' }),
+        );
 
         for (const plugin of pluginPackages) {
             expect(JSON.stringify(plugin.manifest)).not.toMatch(/javascript:|https?:\/\/.*\.(m?js|tsx?)/i);

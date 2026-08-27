@@ -35,12 +35,6 @@ export const generatedImagesGalleryPlugin: PluginPackageDefinition = {
                     title: localized('Session images', '会话图片', '對話圖片'),
                     icon: 'images-outline',
                 },
-                {
-                    id: 'generated-images-gallery.configuration',
-                    surface: 'modal',
-                    title: localized('Gallery settings', '画廊设置', '圖庫設定'),
-                    icon: 'settings-outline',
-                },
             ],
         },
         configuration: { fields: [] },
