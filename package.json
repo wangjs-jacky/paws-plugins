@@ -36,6 +36,15 @@
       "default": "./dist/plugins/generated-images-gallery/model.js"
     }
   },
+  "typesVersions": {
+    "*": {
+      "catalog": ["dist/catalog.d.ts"],
+      "relationship-advisor/server": ["dist/plugins/relationship-advisor/server.d.ts"],
+      "relationship-advisor/chat": ["dist/plugins/relationship-advisor/chat.d.ts"],
+      "relationship-advisor/streaming-markdown": ["dist/plugins/relationship-advisor/streamingMarkdown.d.ts"],
+      "generated-images-gallery/model": ["dist/plugins/generated-images-gallery/model.d.ts"]
+    }
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
