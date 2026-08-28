@@ -6,9 +6,10 @@ const configurationSchema = z.object({}).strict();
 
 export const generatedImagesGalleryPlugin: PluginPackageDefinition = {
     manifest: {
-        schemaVersion: 1,
+        schemaVersion: 2,
+        hostApiVersion: 1,
         id: 'generated-images-gallery',
-        version: '1.0.0',
+        version: '1.1.1',
         title: localized('Generated Images', '生成图片', '生成圖片'),
         description: localized(
             'Browse images generated in your conversations.',
@@ -18,7 +19,24 @@ export const generatedImagesGalleryPlugin: PluginPackageDefinition = {
         icon: 'albums-outline',
         featured: true,
         installedAction: 'open',
-        entrypoint: { type: 'app-route', routeId: 'generated-images-gallery' },
+        permissions: ['paws.conversations.images.read'],
+        entrypoint: { type: 'view', viewId: 'generated-images-gallery.browser' },
+        contributes: {
+            views: [
+                {
+                    id: 'generated-images-gallery.browser',
+                    surface: 'page',
+                    title: localized('Generated Images', '生成图片', '生成圖片'),
+                    icon: 'albums-outline',
+                },
+                {
+                    id: 'generated-images-gallery.session-images',
+                    surface: 'right-panel',
+                    title: localized('Session images', '会话图片', '對話圖片'),
+                    icon: 'images-outline',
+                },
+            ],
+        },
         configuration: { fields: [] },
     },
     normalizeConfiguration(configuration) {

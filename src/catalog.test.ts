@@ -41,4 +41,50 @@ describe('plugin catalog', () => {
 
         expect(() => gallery!.normalizeConfiguration({ source: 'javascript:alert(1)' })).toThrow();
     });
+
+    it('declares host API permissions and UI contributions without executable entrypoints', () => {
+        const advisor = pluginPackages.find(({ manifest }) => manifest.id === 'relationship-advisor');
+        const gallery = pluginPackages.find(({ manifest }) => manifest.id === 'generated-images-gallery');
+
+        expect(advisor!.manifest).toMatchObject({
+            schemaVersion: 2,
+            hostApiVersion: 1,
+            permissions: [
+                'paws.ai.provider.invoke',
+                'paws.secrets.use',
+                'paws.conversations.images.read',
+                'paws.storage.images.write',
+            ],
+            entrypoint: { type: 'view', viewId: 'relationship-advisor.chat' },
+            contributes: {
+                views: expect.arrayContaining([
+                    expect.objectContaining({ id: 'relationship-advisor.chat', surface: 'page' }),
+                    expect.objectContaining({ id: 'relationship-advisor.history', surface: 'left-sidebar' }),
+                    expect.objectContaining({ id: 'relationship-advisor.configuration', surface: 'modal' }),
+                ]),
+            },
+        });
+        expect(gallery!.manifest).toMatchObject({
+            schemaVersion: 2,
+            hostApiVersion: 1,
+            permissions: ['paws.conversations.images.read'],
+            entrypoint: { type: 'view', viewId: 'generated-images-gallery.browser' },
+            contributes: {
+                views: expect.arrayContaining([
+                    expect.objectContaining({ id: 'generated-images-gallery.browser', surface: 'page' }),
+                    expect.objectContaining({ id: 'generated-images-gallery.session-images', surface: 'right-panel' }),
+                ]),
+            },
+        });
+        expect(gallery!.manifest.contributes.views).not.toContainEqual(
+            expect.objectContaining({ surface: 'modal' }),
+        );
+
+        for (const plugin of pluginPackages) {
+            expect(JSON.stringify(plugin.manifest)).not.toMatch(/javascript:|https?:\/\/.*\.(m?js|tsx?)/i);
+            const viewIds = plugin.manifest.contributes.views.map((view) => view.id);
+            expect(new Set(viewIds).size).toBe(viewIds.length);
+            expect(viewIds).toContain(plugin.manifest.entrypoint.viewId);
+        }
+    });
 });

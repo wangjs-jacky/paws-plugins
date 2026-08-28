@@ -8,8 +8,8 @@ import {
 } from './releaseMetadata.mjs';
 
 const manifests = [
-    { schemaVersion: 1, id: 'relationship-advisor', version: '1.0.0' },
-    { schemaVersion: 1, id: 'generated-images-gallery', version: '1.0.0' },
+    { schemaVersion: 2, id: 'relationship-advisor', version: '1.1.1' },
+    { schemaVersion: 2, id: 'generated-images-gallery', version: '1.1.1' },
 ];
 
 describe('release metadata', () => {
@@ -21,8 +21,8 @@ describe('release metadata', () => {
             commit: 'a'.repeat(40),
             manifests,
         })).toEqual([
-            { id: 'relationship-advisor', version: '1.0.0' },
-            { id: 'generated-images-gallery', version: '1.0.0' },
+            { id: 'relationship-advisor', version: '1.1.1' },
+            { id: 'generated-images-gallery', version: '1.1.1' },
         ]);
     });
 
@@ -45,6 +45,11 @@ describe('release metadata', () => {
             tag: 'v0.1.0',
             manifests: [{ ...manifests[0], version: 'latest' }],
         })).toThrow('Invalid version');
+        expect(() => validateRelease({
+            ...release,
+            tag: 'v0.1.0',
+            manifests: [{ ...manifests[0], schemaVersion: 1 }],
+        })).toThrow('schemaVersion 2');
     });
 
     it('builds deterministic checksums and machine-readable metadata', () => {

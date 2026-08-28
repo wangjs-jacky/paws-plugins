@@ -5,8 +5,12 @@ import { relationshipAdvisorPlugin } from './plugins/relationship-advisor/defini
 export type {
     PluginConfigurationField,
     PluginLocalizedText,
-    PluginManifestV1,
+    PluginManifest,
+    PluginManifestV2,
     PluginPackageDefinition,
+    PluginPermission,
+    PluginViewContribution,
+    PluginViewSurface,
     RedactedPluginConfiguration,
 } from './contracts.js';
 
